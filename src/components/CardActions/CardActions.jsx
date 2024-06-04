@@ -7,8 +7,9 @@ const getClasses = createUseStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     gap: `${theme.spacing(1)}px`,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     padding: `${theme.spacing(0)}px ${theme.spacing(2)}px`,
+    paddingBottom: '0.7rem'
   },
 }));
 

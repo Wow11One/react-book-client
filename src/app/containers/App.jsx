@@ -25,6 +25,7 @@ import Header from '../components/Header';
 import IntlProvider from '../components/IntlProvider';
 import MissedPage from '../components/MissedPage';
 import SearchParamsConfigurator from '../components/SearchParamsConfigurator';
+import Main from 'pageProviders/Main';
 
 function App() {
   const dispatch = useDispatch();
@@ -78,6 +79,10 @@ function App() {
                     <Route
                       element={<SecretPage />}
                       path={`${pageURLs[pages.secretPage]}`}
+                    />
+                    <Route
+                      element={<Main />}
+                      path={`${pageURLs[pages.mainPage]}`}
                     />
                     <Route
                       element={(
