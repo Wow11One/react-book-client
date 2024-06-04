@@ -10,8 +10,6 @@ const getClasses = createUseStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    paddingBottom: '1rem',
-    paddingTop: '1rem',
   },
   inputLabel: {
     textAlign: 'center',

@@ -10,6 +10,7 @@ const getClasses = createUseStyles(() => ({
     alignItems: 'center',
     marginTop: '0.6rem',
     marginBottom: '0.6rem',
+    marginLeft: '1rem',
   },
 }));
 

@@ -17,11 +17,13 @@ function Card({
   disablePaddings = false,
   variant = variants.paper,
   onMouseOver,
-  onMouseOut
+  onMouseOut,
+  key,
 }) {
   const { theme } = useTheme();
   return (
     <CardMUI
+      key={key}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
       sx={{

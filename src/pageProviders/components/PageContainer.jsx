@@ -10,7 +10,7 @@ const getClasses = createUseStyles((theme) => ({
   container: {
     background: theme.pageContainer.color.background,
     display: 'flex',
-    height: '100%',
+    minHeight: '100vh',
     overflowY: 'auto',
   },
   content: {
@@ -19,19 +19,22 @@ const getClasses = createUseStyles((theme) => ({
     flexDirection: 'column',
     maxWidth: theme.pageContainer.content.width,
     width: '100%',
+    minHeight: '100vh',
   },
   contentContainer: {
     display: 'flex',
     overflowX: 'auto',
     justifyContent: 'center',
     width: '100%',
+    minHeight: '100vh',
   },
   fullWidth: {
     maxWidth: '100% !important',
   },
   innerContent: {
-    height: '100%',
-    padding: `${theme.spacing(2)}px`,
+    minHeight: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
   },
   sideBarStub: {
     minWidth: `${theme.sideBar.width}px`,

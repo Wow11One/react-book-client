@@ -1,14 +1,17 @@
 import React from 'react';
-import BookListItem from './components/BookListItem';
-import FilterBar from './components/filters/FilterBar';
+import { Provider } from 'react-redux';
+import configureStore from 'misc/redux/configureStore';
+import rootReducer from './reducers';
+import Main from './containers/Main';
 
 const Index = () => {
-    return (
-        <div>
-            <FilterBar />
-            <BookListItem />
-        </div>
-    );
+  const store = configureStore(rootReducer);
+
+  return (
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  );
 };
 
 export default Index;
