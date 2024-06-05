@@ -1,25 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Box from 'components/Box';
+import Typography from 'components/Typography';
 import { useSelector } from 'react-redux';
 import BookListItem from './BookListItem';
+import { createUseStyles } from 'react-jss';
+
+const getStyles = createUseStyles({
+  bookContainer: {
+    marginBottom: 30,
+  },
+});
 
 const BookList = () => {
   const bookStore = useSelector(({ book }) => book);
-  console.log(bookStore.books);
+  const styleClasses = getStyles();
+
   return (
-    <Box
-      display='grid'
-      gridTemplateColumns='repeat(12, 1fr)'
-      gap={3}
-    >
-      {bookStore.books.map(book =>
-        (<Box gridColumn='span 3'>
-          <BookListItem
-            book={book}
-          />
+    <div className={styleClasses.bookContainer}>
+      {!!bookStore.books.length
+        ?
+        <Box
+          display='grid'
+        >
+          <Box gridColumn='span 3'>
+            {bookStore.books.map(book =>
+              (
+                <BookListItem
+                  book={book}
+                />
+              ),
+            )}
+          </Box>
         </Box>
-        ))}
-    </Box>
+        :
+        <Box
+          display='flex'
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
+          <Typography
+            capitalize={true}
+            variant={'title'}
+          >
+            There is no book with such params.
+          </Typography>
+        </Box>
+      }
+    </div>
   );
 };
 

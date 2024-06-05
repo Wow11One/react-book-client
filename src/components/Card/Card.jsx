@@ -37,7 +37,8 @@ function Card({
           : `20px`,
         transition: 'all 0.2s ease-out',
         maxWidth: '250px',
-        maxHeight: '300px'
+        maxHeight: '300px',
+        overflow: 'auto',
       }}
     >
       {children}

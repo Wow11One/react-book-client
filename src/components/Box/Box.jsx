@@ -3,10 +3,12 @@ import BoxMUI from '@mui/material/Box';
 
 const Box = ({
   display='grid',
-  gridTemplateColumns='repeat(12, 1fr)',
+  gridTemplateColumns='repeat(3, 1fr)',
   gap=3,
   children,
   gridColumn,
+  alignItems,
+  justifyContent,
 }) => {
   return (
     <BoxMUI
@@ -14,6 +16,8 @@ const Box = ({
       gridTemplateColumns={gridTemplateColumns}
       gap={gap}
       gridColumn={gridColumn}
+      alignItems={alignItems}
+      justifyContent={justifyContent}
     >
       {children}
     </BoxMUI>

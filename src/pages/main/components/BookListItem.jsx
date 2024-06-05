@@ -7,21 +7,21 @@ import Button from 'components/Button';
 import DeleteButton from './DeleteButton';
 import Card from 'components/Card';
 
-const BookListItem = ({
-  id,
-  image,
-  title,
-  genre,
-  author,
-}) => {
+const BookListItem = ({ book }) => {
   const [state, setState] = useState({ showDeleteButton: false, selectedId: NaN });
-
+  const {
+    id,
+    image,
+    title,
+    genre,
+    author,
+  } = book;
   return (
     <Card
       key={id}
       disablePaddings={true}
-      onMouseOver={() => setState({ ...state, showDeleteButton: true, selectedKey: 1 })}
-      onMouseOut={() => setState({ ...state, showDeleteButton: false, selectedKey: NaN })}
+      onMouseOver={() => setState({ ...state, showDeleteButton: true, selectedId: id })}
+      onMouseOut={() => setState({ ...state, showDeleteButton: false, selectedId: NaN })}
     >
       <CardMedia
         alt='book image'

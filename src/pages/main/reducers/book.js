@@ -9,6 +9,7 @@ const initialState = {
   isFetchingBooks: false,
   error: null,
   totalPages: 0,
+  currentPage: 1,
 };
 
 const mapToBook = (book) => ({
@@ -28,6 +29,7 @@ const mapToBook = (book) => ({
 
 export default function Reducer(state = initialState, action) {
   switch (action.type) {
+
     case REQUEST_BOOK_LIST: {
       return {
         ...state,
