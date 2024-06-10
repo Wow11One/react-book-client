@@ -15,10 +15,11 @@ const addAxiosInterceptors = ({
   axios.interceptors.response.use(
     (response) => response.data,
     (error) => {
-      if (error.response.data
-        .some(beError => beError?.code === 'INVALID_TOKEN')
-      ) {
-        onSignOut();
+      if (Array.isArray(error.response.data)) { // there was the error because my backend returns a plain object
+        if (error.response.data.some(beError => beError?.code === 'INVALID_TOKEN')
+        ) {
+          onSignOut();
+        }
       }
       throw error.response.data;
     }

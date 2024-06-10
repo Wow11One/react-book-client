@@ -11,7 +11,7 @@ const getClasses = createUseStyles(() => ({
     marginTop: '0.6rem',
     marginBottom: '0.6rem',
     marginLeft: '1rem',
-    gap: '20px',
+    gap: '50px',
   },
 }));
 

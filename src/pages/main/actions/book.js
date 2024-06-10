@@ -4,14 +4,17 @@ import {
   REQUEST_BOOK_LIST,
   RECEIVE_BOOK_LIST,
   ERROR_BOOK_LIST,
+  DELETE_BOOK_SUCCESS,
+  SHOW_DELETE_MODAL,
+  SHOW_NOTIFICATION_POP_UP,
 } from 'pages/main/constants/actionTypes';
 
+// requests to the server
 const getBooks = (
   page,
   size,
   authorId,
-  publicationHouse,
-  genre,
+  genreId,
 ) => {
   const { SERVER_URL } = config;
 
@@ -19,11 +22,17 @@ const getBooks = (
     page,
     size,
     authorId,
-    publicationHouse,
-    genre,
+    genreId,
   });
 };
 
+const removeBook = (id) => {
+  const { SERVER_URL } = config;
+
+  return axios.delete(SERVER_URL + `/api/books/${id}`);
+};
+
+// fetch book list actions
 const requestBooks = () => ({
   type: REQUEST_BOOK_LIST,
 });
@@ -33,9 +42,25 @@ const receiveBooks = (books) => ({
   payload: books,
 });
 
-const errorBooks = (error) => ({
+const errorBookList = (error) => ({
   type: ERROR_BOOK_LIST,
   payload: error,
+});
+
+// delete book actions
+const removeBookActionSuccess = (id) => ({
+  type: DELETE_BOOK_SUCCESS,
+  payload: { id },
+});
+
+const showDeleteModalAction = (show, id) => ({
+  type: SHOW_DELETE_MODAL,
+  payload: { showDeleteModal: show, bookIdToBeDeleted: id },
+});
+
+const showNotificationPopUpAction = (id, show) => ({
+  type: SHOW_NOTIFICATION_POP_UP,
+  payload: { id, show },
 });
 
 export const fetchBooks = (
@@ -43,12 +68,39 @@ export const fetchBooks = (
   page = 1,
   size = 6,
   authorId,
-  publicationHouse,
-  genre,
+  genreId,
 ) => {
   dispatch(requestBooks());
 
-  return getBooks(page, size, authorId, publicationHouse, genre)
+  return getBooks(page, size, authorId, genreId)
     .then(books => dispatch(receiveBooks(books)))
-    .catch(err => dispatch(errorBooks(err)));
+    .catch(error => dispatch(errorBookList(error.response.data.message)));
+};
+
+export const deleteBook = (
+  dispatch,
+  id,
+) => {
+  return removeBook(id)
+    .then(_ => {
+      dispatch(removeBookActionSuccess(id));
+      return Promise.resolve(id);
+    })
+    .catch(error =>  Promise.reject(error));
+};
+
+export const showDeleteModal = (
+  dispatch,
+  show,
+  id,
+) => {
+  dispatch(showDeleteModalAction(show, id));
+};
+
+export const showDeleteNotificationPopUp = (
+  dispatch,
+  show,
+  id,
+) => {
+  dispatch(showNotificationPopUpAction(id, show));
 };

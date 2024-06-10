@@ -36,9 +36,9 @@ const theme = {
         text: commonColors.text.primaryHeader,
       },
       primary: {
-        background: '#51b051',
-        backgroundDisabled: '#51b051',
-        backgroundHovered: '#60bb60',
+        background: '#024f7f',
+        backgroundDisabled: '#056cb0',
+        backgroundHovered: '#0469ab',
         text: commonColors.text.primaryContrast,
       },
       secondary: {

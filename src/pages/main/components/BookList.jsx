@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createUseStyles } from 'react-jss';
 import Box from 'components/Box';
 import Typography from 'components/Typography';
-import { useSelector } from 'react-redux';
+import DeleteModal from './DeleteModal';
 import BookListItem from './BookListItem';
-import { createUseStyles } from 'react-jss';
+import Snackbar from 'components/Snackbar';
+import { showDeleteModal, showDeleteNotificationPopUp } from '../actions/book';
 
 const getStyles = createUseStyles({
   bookContainer: {
@@ -13,6 +16,7 @@ const getStyles = createUseStyles({
 
 const BookList = () => {
   const bookStore = useSelector(({ book }) => book);
+  const dispatch = useDispatch();
   const styleClasses = getStyles();
 
   return (
@@ -28,7 +32,7 @@ const BookList = () => {
                 <BookListItem
                   book={book}
                 />
-              ),
+              )
             )}
           </Box>
         </Box>
@@ -46,6 +50,30 @@ const BookList = () => {
           </Typography>
         </Box>
       }
+        <DeleteModal
+          open={bookStore.showDeleteModal}
+          bookId={bookStore.bookIdToBeDeleted}
+          onClose={() => {
+            showDeleteModal(
+              dispatch,
+              false,
+              null,
+            );
+          }}
+        />
+        <Snackbar
+          open={bookStore.showDeleteNotificationPopUp}
+          message={`The #${bookStore.notificationPopUpBookId} book was successfully deleted.`}
+          onClose={() => {
+            showDeleteNotificationPopUp(
+              dispatch,
+              false,
+              NaN,
+            );
+          }}
+        >
+
+        </Snackbar>
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import React from 'react';
-import Typography from '../../../../components/Typography';
-import Select from '../../../../components/Select';
-import MenuItem from '../../../../components/MenuItem';
+import Typography from 'components/Typography';
+import Select from 'components/Select';
+import MenuItem from 'components/MenuItem';
 import { createUseStyles } from 'react-jss';
-import InputLabel from '../../../../components/InputLabel';
+import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 const getClasses = createUseStyles(() => ({
   filterContainer: {
@@ -21,6 +22,20 @@ const getClasses = createUseStyles(() => ({
 
 const AuthorFilter = () => {
   const styleClasses = getClasses();
+  const authorStore = useSelector(({ author }) => author);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const AUTHOR_ID_PARAMETER = 'authorId';
+  const authorId = searchParams.get(AUTHOR_ID_PARAMETER);
+
+  const addAuthorIdParam = (e) => {
+    if (e.target.value) {
+      searchParams.set(AUTHOR_ID_PARAMETER, e.target.value);
+      searchParams.delete('page');
+    } else {
+      searchParams.delete(AUTHOR_ID_PARAMETER);
+    }
+    setSearchParams(searchParams);
+  };
 
   return (
     <div className={styleClasses.filterContainer}>
@@ -30,15 +45,22 @@ const AuthorFilter = () => {
       <div>
         <Select
           displayEmpty={true}
+          value={authorId}
+          onChange={addAuthorIdParam}
         >
-          <InputLabel>
-            any author
-          </InputLabel>
           <MenuItem
-            value={10}
+            value={null}
+            selected={true}
           >
-            Hello)
+            any author
           </MenuItem>
+          {authorStore.authors.map(author => (
+            <MenuItem
+              value={author.id}
+            >
+              {author.name}
+            </MenuItem>
+          ))}
         </Select>
       </div>
     </div>

@@ -2,10 +2,14 @@ import React from 'react';
 import IconButton from '../../../components/IconButton';
 import TrashCanIcon from '../../../components/icons/TrashCan';
 
-const DeleteButton = () => {
+const DeleteButton = ({
+  onClick,
+}) => {
     return (
         <div>
-            <IconButton>
+            <IconButton
+              onClick={onClick}
+            >
                 <TrashCanIcon/>
             </IconButton>
         </div>

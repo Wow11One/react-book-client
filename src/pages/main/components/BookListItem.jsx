@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import CardMedia from 'components/CardMedia';
 import CardContent from 'components/CardContent';
 import Typography from 'components/Typography';
@@ -6,9 +7,11 @@ import CardActions from 'components/CardActions';
 import Button from 'components/Button';
 import DeleteButton from './DeleteButton';
 import Card from 'components/Card';
+import { showDeleteModal } from '../actions/book';
 
 const BookListItem = ({ book }) => {
   const [state, setState] = useState({ showDeleteButton: false, selectedId: NaN });
+  const dispatch = useDispatch();
   const {
     id,
     image,
@@ -16,6 +19,7 @@ const BookListItem = ({ book }) => {
     genre,
     author,
   } = book;
+
   return (
     <Card
       key={id}
@@ -49,11 +53,19 @@ const BookListItem = ({ book }) => {
       </CardContent>
       <CardActions>
         <div>
-          <Button colorVariant='secondary'>Learn more</Button>
+          <Button
+            colorVariant='secondary'
+          >
+            Learn more
+          </Button>
         </div>
         {state.showDeleteButton && state.selectedId === id &&
           <div>
-            <DeleteButton>Delete</DeleteButton>
+            <DeleteButton
+              onClick={() => showDeleteModal(dispatch, true, id)}
+            >
+              Delete
+            </DeleteButton>
           </div>
         }
       </CardActions>
