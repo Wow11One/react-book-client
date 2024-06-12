@@ -16,6 +16,7 @@ const IconButton = ({
   onClick,
   onPress,
   onRelease,
+  hidden,
 }) => {
   const { theme } = useTheme();
   return (
@@ -32,6 +33,7 @@ const IconButton = ({
           '&:hover': {
             background: theme.button.color[colorVariant].backgroundHovered,
           },
+          visibility: hidden ? 'hidden' : 'visible',
           background: theme.button.color[colorVariant].background,
           color: theme.button.color[colorVariant].text,
           padding: `${theme.spacing(0.5)}px`,

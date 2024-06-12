@@ -12,6 +12,7 @@ const colorVariants = {
 const inputTypes = {
   password: 'password',
   text: 'text',
+  number: 'number',
 };
 
 const REQUIRED_CHAR = '*';

@@ -16,10 +16,16 @@ function Card({
   children,
   disablePaddings = false,
   variant = variants.paper,
+  onMouseOver,
+  onMouseOut,
+  key,
 }) {
   const { theme } = useTheme();
   return (
     <CardMUI
+      key={key}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
       sx={{
         background: customBackground || theme.card.color.background[variant],
         borderRadius: '0px',
@@ -28,9 +34,11 @@ function Card({
         gap: `${theme.spacing(2)}px`,
         padding: disablePaddings
           ? 'none'
-          : `${theme.spacing(2)}px 0px`,
+          : `20px`,
         transition: 'all 0.2s ease-out',
-        width: '100%',
+        maxWidth: '250px',
+        maxHeight: '300px',
+        overflow: 'auto',
       }}
     >
       {children}

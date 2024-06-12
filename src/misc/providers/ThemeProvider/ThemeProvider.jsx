@@ -6,13 +6,16 @@ import React, {
 } from 'react';
 
 import defaultTheme from './themes/default';
+import customTheme from './themes/custom';
 
 const themeNames = {
   default: 'default',
+  custom: 'custom'
 };
 
 const ThemesToThemeNames = {
   [themeNames.default]: defaultTheme,
+  [themeNames.custom]: customTheme
 };
 
 export const ThemeContext = createContext({
@@ -22,7 +25,7 @@ export const ThemeContext = createContext({
 
 const ThemeProvider = ({
   children,
-  themeName: inputThemeName = themeNames.default,
+  themeName: inputThemeName = themeNames.custom,
 }) => {
   const [state, setState] = useState({
     themeName: inputThemeName,

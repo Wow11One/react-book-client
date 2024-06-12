@@ -14,6 +14,8 @@ import AuthoritiesProvider from 'misc/providers/AuthoritiesProvider';
 import DefaultPage from 'pageProviders/Default';
 import Loading from 'components/Loading';
 import LoginPage from 'pageProviders/Login';
+import Main from 'pageProviders/Main';
+import BookForm from 'pageProviders/BookForm';
 import PageContainer from 'pageProviders/components/PageContainer';
 import pageURLs from 'constants/pagesURLs';
 import SecretPage from 'pageProviders/Secret';
@@ -78,6 +80,14 @@ function App() {
                     <Route
                       element={<SecretPage />}
                       path={`${pageURLs[pages.secretPage]}`}
+                    />
+                    <Route
+                      element={<Main />}
+                      path={`${pageURLs[pages.bookPage]}`}
+                    />
+                    <Route
+                      element={<BookForm />}
+                      path={`${pageURLs[pages.bookPage]}/form`}
                     />
                     <Route
                       element={(

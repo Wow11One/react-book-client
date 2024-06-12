@@ -30,6 +30,8 @@ function Button({
   onClick,
   startIcon,
   variant = variants.secondary,
+  component,
+  fullWidth = false,
 }) {
   const { theme } = useTheme();
   return (
@@ -38,6 +40,8 @@ function Button({
         <ButtonMUI
           disabled
           variant="contained"
+          fullWidth={fullWidth}
+          component={component}
         >
           <CircularProgress size={16} />
         </ButtonMUI>
@@ -64,6 +68,8 @@ function Button({
             },
           }}
           variant={MUIVariantsToVariants[variant]}
+          component={component}
+          fullWidth={fullWidth}
         >
           {children}
         </ButtonMUI>
