@@ -47,6 +47,7 @@ const AuthorFilter = () => {
           displayEmpty={true}
           value={authorId}
           onChange={addAuthorIdParam}
+          label={'author'}
         >
           <MenuItem
             value={null}

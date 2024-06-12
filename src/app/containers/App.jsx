@@ -14,6 +14,8 @@ import AuthoritiesProvider from 'misc/providers/AuthoritiesProvider';
 import DefaultPage from 'pageProviders/Default';
 import Loading from 'components/Loading';
 import LoginPage from 'pageProviders/Login';
+import Main from 'pageProviders/Main';
+import BookForm from 'pageProviders/BookForm';
 import PageContainer from 'pageProviders/components/PageContainer';
 import pageURLs from 'constants/pagesURLs';
 import SecretPage from 'pageProviders/Secret';
@@ -25,7 +27,6 @@ import Header from '../components/Header';
 import IntlProvider from '../components/IntlProvider';
 import MissedPage from '../components/MissedPage';
 import SearchParamsConfigurator from '../components/SearchParamsConfigurator';
-import Main from 'pageProviders/Main';
 
 function App() {
   const dispatch = useDispatch();
@@ -82,7 +83,11 @@ function App() {
                     />
                     <Route
                       element={<Main />}
-                      path={`${pageURLs[pages.mainPage]}`}
+                      path={`${pageURLs[pages.bookPage]}`}
+                    />
+                    <Route
+                      element={<BookForm />}
+                      path={`${pageURLs[pages.bookPage]}/form`}
                     />
                     <Route
                       element={(

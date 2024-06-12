@@ -24,9 +24,13 @@ const Select = ({
   value,
   variant = variants.standard,
   displayEmpty,
+  label = '',
+  labelId,
 }) => {
   return (
     <SelectMui
+      helperText={'wrong!'}
+      color={'primary'}
       disabled={disabled}
       disableUnderline={disableUnderline}
       fullWidth={fullWidth}
@@ -48,6 +52,8 @@ const Select = ({
       value={value}
       variant={variant}
       displayEmpty={displayEmpty}
+      label={label}
+      labelId={labelId}
     >
       {children}
     </SelectMui>

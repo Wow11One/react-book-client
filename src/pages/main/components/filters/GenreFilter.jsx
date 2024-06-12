@@ -44,6 +44,7 @@ const GenreFilter = () => {
           displayEmpty={true}
           value={genreId}
           onChange={addGenreIdParam}
+          label={'author'}
         >
           <MenuItem
             value={null}

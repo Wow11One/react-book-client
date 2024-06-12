@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUseStyles } from 'react-jss';
 import Box from 'components/Box';
@@ -24,21 +24,21 @@ const BookList = () => {
       {!!bookStore.books.length
         ?
         <Box
-          display='grid'
+          display="grid"
         >
-          <Box gridColumn='span 3'>
+          <Box gridColumn="span 3">
             {bookStore.books.map(book =>
               (
                 <BookListItem
                   book={book}
                 />
-              )
+              ),
             )}
           </Box>
         </Box>
         :
         <Box
-          display='flex'
+          display="flex"
           justifyContent={'center'}
           alignItems={'center'}
         >
@@ -50,30 +50,29 @@ const BookList = () => {
           </Typography>
         </Box>
       }
-        <DeleteModal
-          open={bookStore.showDeleteModal}
-          bookId={bookStore.bookIdToBeDeleted}
-          onClose={() => {
-            showDeleteModal(
-              dispatch,
-              false,
-              null,
-            );
-          }}
-        />
-        <Snackbar
-          open={bookStore.showDeleteNotificationPopUp}
-          message={`The #${bookStore.notificationPopUpBookId} book was successfully deleted.`}
-          onClose={() => {
-            showDeleteNotificationPopUp(
-              dispatch,
-              false,
-              NaN,
-            );
-          }}
-        >
-
-        </Snackbar>
+      <DeleteModal
+        open={bookStore.showDeleteModal}
+        bookId={bookStore.bookIdToBeDeleted}
+        onClose={() => {
+          showDeleteModal(
+            dispatch,
+            false,
+            null,
+          );
+        }}
+      />
+      <Snackbar
+        open={bookStore.showDeleteNotificationPopUp}
+        message={`The #${bookStore.notificationPopUpBookId} book was successfully deleted.`}
+        onClose={() => {
+          showDeleteNotificationPopUp(
+            dispatch,
+            false,
+            NaN,
+          );
+        }}
+      >
+      </Snackbar>
     </div>
   );
 };

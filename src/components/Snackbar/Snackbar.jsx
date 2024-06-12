@@ -2,6 +2,7 @@ import React from 'react';
 import SnackbarMUI from '@mui/material/Snackbar';
 import IconButton from '../IconButton';
 import CloseIcon from '../icons/Close';
+
 const Snackbar = ({
   open,
   onClose,
