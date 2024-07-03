@@ -9,11 +9,12 @@ import {
   REQUEST_USER,
   SUCCESS_SIGN_IN,
   SUCCESS_SIGN_UP,
+  USER_AUTHENTICATION,
 } from '../constants/actionTypes';
 
 const initialState = {
   authorities: [],
-  firstName: '',
+  fullName: '',
   email: '',
   errors: [],
   id: '',
@@ -23,7 +24,6 @@ const initialState = {
   isFetchingSignIn: false,
   isFetchingSignUp: false,
   isFetchingUser: false,
-  lastName: '',
   login: '',
 };
 
@@ -60,12 +60,11 @@ export default function Reducer(state = initialState, action) {
         ...state,
         authorities: user.authorities || initialState.authorities,
         email: user.email || initialState.email,
-        firstName: user.firstName || initialState.firstName,
+        fullName: user.name || initialState.fullName,
         id: user.id || initialState.id,
         isAuthorized: true,
         isFetchingSignIn: false,
         isFetchingUser: false,
-        lastName: user.lastName || initialState.lastName,
         login: user.login || initialState.login,
       };
     }
@@ -79,7 +78,11 @@ export default function Reducer(state = initialState, action) {
 
     case ERROR_RECEIVE_USER:
     case REQUEST_SIGN_OUT: {
-      return initialState;
+      return {
+        ...state,
+        isFetchingUser: false,
+        isAuthorized: false,
+      };
     }
 
     case REQUEST_SIGN_IN: {
@@ -105,6 +108,13 @@ export default function Reducer(state = initialState, action) {
         isFetchingSignUp: true,
         isFailedSignUp: false,
       }
+    }
+
+    case USER_AUTHENTICATION: {
+      return {
+        ...state,
+        isAuthorized: action.payload,
+      };
     }
 
     default: {

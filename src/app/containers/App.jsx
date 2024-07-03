@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   BrowserRouter,
   Routes,
-  Route,
+  Route, Navigate,
 } from 'react-router-dom';
 import {
   useDispatch,
@@ -11,9 +11,8 @@ import {
 import { addAxiosInterceptors } from 'misc/requests';
 import * as pages from 'constants/pages';
 import AuthoritiesProvider from 'misc/providers/AuthoritiesProvider';
-import DefaultPage from 'pageProviders/Default';
 import Loading from 'components/Loading';
-import LoginPage from 'pageProviders/Login';
+import GoogleLoginPage from 'pageProviders/GoogleLogin';
 import Main from 'pageProviders/Main';
 import BookForm from 'pageProviders/BookForm';
 import PageContainer from 'pageProviders/components/PageContainer';
@@ -27,6 +26,7 @@ import Header from '../components/Header';
 import IntlProvider from '../components/IntlProvider';
 import MissedPage from '../components/MissedPage';
 import SearchParamsConfigurator from '../components/SearchParamsConfigurator';
+import AuthLayout from '../components/AuthLayout';
 
 function App() {
   const dispatch = useDispatch();
@@ -35,11 +35,6 @@ function App() {
   });
 
   const {
-    errors,
-    isFailedSignIn,
-    isFailedSignUp,
-    isFetchingSignIn,
-    isFetchingSignUp,
     isFetchingUser,
   } = useSelector(({ user }) => user);
 
@@ -47,7 +42,6 @@ function App() {
     addAxiosInterceptors({
       onSignOut: () => dispatch(actionsUser.fetchSignOut()),
     });
-    dispatch(actionsUser.fetchUser());
     setState({
       ...state,
       componentDidMount: true,
@@ -73,22 +67,30 @@ function App() {
                 )}
                 {!isFetchingUser && (
                   <Routes>
+                    <Route>
+                      {/* unauthorized routes */}
+                      <Route
+                        element={<GoogleLoginPage />}
+                        path={`${pageURLs[pages.login]}`}
+                      />
+                    </Route>
                     <Route
-                      element={<DefaultPage />}
-                      path={`${pageURLs[pages.defaultPage]}`}
-                    />
-                    <Route
-                      element={<SecretPage />}
-                      path={`${pageURLs[pages.secretPage]}`}
-                    />
-                    <Route
-                      element={<Main />}
-                      path={`${pageURLs[pages.bookPage]}`}
-                    />
-                    <Route
-                      element={<BookForm />}
-                      path={`${pageURLs[pages.bookPage]}/form`}
-                    />
+                      element={<AuthLayout />}
+                      path='/'
+                    >
+                      <Route
+                        element={<SecretPage />}
+                        path={`${pageURLs[pages.secretPage]}`}
+                      />
+                      <Route
+                        element={<Navigate to={`${pageURLs[pages.bookPage]}`} />}
+                        index
+                      />
+                      <Route
+                        element={<Main />}
+                        path={`${pageURLs[pages.bookPage]}`}
+                      />
+                      {/*
                     <Route
                       element={(
                         <LoginPage
@@ -123,14 +125,19 @@ function App() {
                       )}
                       path={`${pageURLs[pages.login]}`}
                     />
-                    <Route
-                      element={(
-                        <MissedPage
-                          redirectPage={`${pageURLs[pages.defaultPage]}`}
-                        />
-                      )}
-                      path="*"
-                    />
+                    */}
+
+                      <Route
+                        element={<BookForm/>}
+                        path={`${pageURLs[pages.bookPage]}/form`}
+                      />
+                      <Route
+                        element={(
+                          <Navigate to={`${pageURLs[pages.bookPage]}`} />
+                        )}
+                        path="*"
+                      />
+                    </Route>
                   </Routes>
                 )}
               </IntlProvider>

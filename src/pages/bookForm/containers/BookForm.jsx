@@ -17,7 +17,7 @@ import useChangePage from 'misc/hooks/useChangePage';
 import pagesURLs from 'constants/pagesURLs';
 import * as pages from 'constants/pages';
 import formType from '../constants/formType';
-import { changeBook, fetchBook, saveBook } from '../actions/book';
+import { changeBook, fetchBook, saveBook, receiveBook, mapToBook } from '../actions/book';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAuthors } from '../actions/author';
 import { fetchGenres } from '../actions/genre';
@@ -78,7 +78,7 @@ const BookForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const {
-    book,
+    book: bookStore,
     genre,
     author
   } = useSelector(({ book, genre, author }) => ({ book, genre, author }));
@@ -144,7 +144,7 @@ const BookForm = () => {
     const type = 'type';
     let resTypeParameter = typeParameter;
 
-    if (![formType.INFO, formType.UPDATE, formType.CREATE].includes(resTypeParameter)) {
+    if (!([formType.INFO, formType.UPDATE, formType.CREATE].includes(resTypeParameter))) {
       resTypeParameter = formType.INFO; // type by default
       searchParams.set(type, resTypeParameter);
       setSearchParams(searchParams);
@@ -182,8 +182,9 @@ const BookForm = () => {
     if (formValidations.stringValueValidation(state.publicationHouse)) {
       formErrors.publicationHouseError = 'publication house should be more than 3 symbols!';
     }
-    if (formValidations.minNumberValueConstraint(state.yearPublished, 1600)) {
-      formErrors.yearPublishedError = 'year published should be more than 1600!';
+    if (formValidations.minNumberValueConstraint(state.yearPublished, 1600)
+      || formValidations.maxNumberValueConstraint(state.yearPublished, 2030)) {
+      formErrors.yearPublishedError = 'year published should be bigger than 1600, but less that 2030!';
     }
     if (formValidations.minNumberValueConstraint(state.circulation, 100)) {
       formErrors.circulationError = 'circulation should be more than 100!';
@@ -258,7 +259,10 @@ const BookForm = () => {
         bookFormData,
         idParameter,
       )
-        .then(id => showSnackBar(true, `The new book with id #${id} was created!`))
+        .then(book => {
+          showSnackBar(true, `The new book with id #${book.id} was updated!`);
+          dispatch(receiveBook(mapToBook(book)));
+        })
         .catch(error => showSnackBar(true, `error occurred while updating! ${error}`))
         .finally(() => setErrors({
           ...initErrorState,
@@ -280,12 +284,13 @@ const BookForm = () => {
         dispatch,
         idParameter,
       )
-        .then(book => mapReduxBookToReactState(book, bookListFilters, formPageType));
+        .then(book => mapReduxBookToReactState(book, bookListFilters, formPageType))
+        .catch(error => showSnackBar(true, `error occurred while fetching book: ${error}`));
     } else {
       setState({
         ...state,
         bookListFilters,
-        formType,
+        formType: formPageType,
       });
     }
   }, []);
@@ -314,16 +319,17 @@ const BookForm = () => {
           <IconButton
             hidden={state.formType === formType.CREATE}
             onClick={() => {
+              if (!state.formType || state.formType === formType.CREATE) {
+                return;
+              }
               let type;
               if (state.formType === formType.UPDATE) {
                 type = formType.INFO;
+                mapReduxBookToReactState(bookStore, state.bookListFilters, type);
               } else {
                 type = formType.UPDATE;
+                mapReduxBookToReactState(state, state.bookListFilters, type);
               }
-              setState({
-                ...state,
-                formType: type,
-              });
               searchParams.set('type', type);
               setSearchParams(searchParams);
             }}
@@ -573,7 +579,7 @@ const BookForm = () => {
             colorVariant={'secondary'}
             onClick={() => {
               if (state.formType === formType.UPDATE) {
-
+                mapReduxBookToReactState(bookStore, state.bookListFilters, formType.INFO);
               } else {
                 backToBookListPage();
               }

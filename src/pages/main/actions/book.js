@@ -74,7 +74,7 @@ export const fetchBooks = (
 
   return getBooks(page, size, authorId, genreId)
     .then(books => dispatch(receiveBooks(books)))
-    .catch(error => dispatch(errorBookList(error.response.data.message)));
+    .catch(error => dispatch(errorBookList(error.response?.data?.message)));
 };
 
 export const deleteBook = (

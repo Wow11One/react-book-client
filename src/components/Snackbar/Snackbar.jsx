@@ -21,7 +21,7 @@ const Snackbar = ({
 
   return (
     <SnackbarMUI
-      autoHideDuration={12000}
+      autoHideDuration={5000}
       open={open}
       message={message}
       color={'white'}

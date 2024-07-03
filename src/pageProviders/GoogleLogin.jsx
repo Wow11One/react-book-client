@@ -1,6 +1,6 @@
 import * as pages from 'constants/pages';
 import { useSelector } from 'react-redux';
-import LoginPage from 'pages/login';
+import GoogleLoginPage from 'pages/google/login';
 import pagesURLs from 'constants/pagesURLs';
 import React, { useEffect } from 'react';
 import useChangePage from 'misc/hooks/useChangePage';
@@ -8,7 +8,7 @@ import useLocationSearch from 'misc/hooks/useLocationSearch';
 
 import PageContainer from './components/PageContainer';
 
-const Login = (props) => {
+const GoogleLogin = (props) => {
   const locationSearch = useLocationSearch();
   const user = useSelector(({ user }) => user);
   const changePage = useChangePage();
@@ -31,10 +31,10 @@ const Login = (props) => {
       {user.isAuthorized
         ? null
         : (
-          <LoginPage {...props} />
+          <GoogleLoginPage {...props} />
         )}
     </PageContainer>
   );
 };
 
-export default Login;
+export default GoogleLogin;

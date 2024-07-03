@@ -24,7 +24,7 @@ const MUIVariantsToVariants = {
 function Button({
   children,
   colorVariant = colorVariants.primary,
-  disabled,
+  disabled = false,
   endIcon,
   isLoading = false,
   onClick,

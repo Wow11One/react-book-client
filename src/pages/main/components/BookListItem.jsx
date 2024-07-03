@@ -72,7 +72,7 @@ const BookListItem = ({ book }) => {
                   ...(page && { page }),
                   ...(authorId && { authorId }),
                   ...(genreId && { genreId }),
-                  type: formType.UPDATE,
+                  type: formType.INFO,
                   id,
                 },
               });

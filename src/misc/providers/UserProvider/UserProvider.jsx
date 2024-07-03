@@ -15,6 +15,7 @@ const UserProvider = ({
         id: user.id,
         lastName: user.lastName,
         login: user.login,
+        isAuthorized: user.isAuthorized,
       }}
     >
       {children}
