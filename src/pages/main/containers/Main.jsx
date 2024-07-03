@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Pagination from 'components/Pagination';
 import Button from 'components/Button';
 import FilterBar from 'pages/main/components/filters/FilterBar';
@@ -6,13 +7,13 @@ import BookList from 'pages/main/components/BookList';
 import { fetchBooks } from '../actions/book';
 import { fetchAuthors } from '../actions/author';
 import { fetchGenres } from '../actions/genre';
-import { useDispatch, useSelector } from 'react-redux';
 import { createUseStyles } from 'react-jss';
 import { useSearchParams } from 'react-router-dom';
 import useChangePage from 'misc/hooks/useChangePage';
 import pagesURLs from 'constants/pagesURLs';
 import * as pages from 'constants/pages';
 import formType from '../../bookForm/constants/formType';
+import useUser from 'misc/hooks/useUser';
 
 const getStyles = createUseStyles({
   bookContainer: {
@@ -39,6 +40,7 @@ const Main = () => {
   const bookStore = useSelector(({ book }) => book);
   const changePage = useChangePage();
   const [searchParams, setSearchParams] = useSearchParams();
+  const user = useUser();
 
   const page = parseInt(searchParams.get('page')) || 1;
   const authorId = parseInt(searchParams.get('authorId')) || null;
@@ -80,6 +82,7 @@ const Main = () => {
       <div
         className={styleClasses.filterButtonsContainer}
       >
+
         <div
           className={styleClasses.filterContainer}
         >
@@ -88,7 +91,7 @@ const Main = () => {
         <div>
           <Button
             onClick={() => changePage({
-              pathname: `${pagesURLs[pages.bookPage]}/form`,
+              pathname: `${pagesURLs[pages.bookFormPage]}`,
               locationSearch: {
                 ...(page && { page }),
                 ...(authorId && { authorId }),

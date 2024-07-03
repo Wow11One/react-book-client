@@ -21,9 +21,8 @@ const BookList = () => {
 
   return (
     <div className={styleClasses.bookContainer}>
-      {!!bookStore.books.length
-        ?
-        <Box
+      {!!bookStore.books.length &&
+        (<Box
           display="grid"
         >
           <Box gridColumn="span 3">
@@ -35,9 +34,10 @@ const BookList = () => {
               ),
             )}
           </Box>
-        </Box>
-        :
-        <Box
+        </Box>)
+      }
+      {!bookStore.books.length &&
+        (<Box
           display="flex"
           justifyContent={'center'}
           alignItems={'center'}
@@ -48,7 +48,7 @@ const BookList = () => {
           >
             There is no book with such params.
           </Typography>
-        </Box>
+        </Box>)
       }
       <DeleteModal
         open={bookStore.showDeleteModal}

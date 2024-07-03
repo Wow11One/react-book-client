@@ -11,31 +11,17 @@ import {
   REQUEST_USER,
   SUCCESS_SIGN_IN,
   SUCCESS_SIGN_UP,
+  USER_AUTHENTICATION,
+  ERROR_RECEIVE_USER,
 } from '../constants/actionTypes';
-
-const MOCK_USER_AUTH = {
-  login: 'admin',
-  password: '21232f297a57a5a743894a0e4a801fc3' // admin
-};
-
-const MOCK_USER_AUTH_RESPONSE = {
-  user: {
-    authorities: ['ENABLE_SEE_SECRET_PAGE'],
-    email: 'adminMail@gmail.com',
-    firstName: 'Адмiнич',
-    id: '123',
-    lastName: 'Адмiнченко',
-    login: 'admin',
-  },
-  token: {
-    expirationTimestamp: 1714304134,
-    value: 'someJWTToken',
-  }
-};
 
 const receiveUser = (user) => ({
   payload: user,
   type: RECEIVE_USER,
+});
+
+const errorReceiveUser = () => ({
+  type: ERROR_RECEIVE_USER,
 });
 
 const requestUser = () => ({
@@ -75,27 +61,16 @@ const requestSignOut = () => ({
 
 const getUser = () => {
   const {
-    USERS_SERVICE,
+    SERVER_URL,
   } = config;
-  return axios.get(`${USERS_SERVICE}/user/get`);
+  return axios.get(`${SERVER_URL}/api/profile`);
 };
 
-const signIn = ({
-  email,
-  login,
-  password,
-}) => {
+const googleSignIn = () => {
   const {
-    USERS_SERVICE,
+    SERVER_URL,
   } = config;
-  return axios.post(
-    `${USERS_SERVICE}/user/signIn`,
-    {
-      email,
-      login,
-      password,
-    },
-  );
+  return axios.get(`${SERVER_URL}/oauth/google/authenticate`);
 };
 
 const signUp = ({
@@ -124,32 +99,23 @@ const fetchRefreshToken = () => (dispatch) => {
 
 };
 
-const fetchSignIn = ({
-  email,
-  login,
-  password,
-}) => (dispatch) => {
+export const googleFetchSignIn = (dispatch) => {
+  return googleSignIn()
+    .catch(error => {
+      console.log(error);
+    }).then(data => {
+      window.location.href = data.address;
+    }).catch((errors) => dispatch(errorSignIn(errors)));
+};
+
+const fetchSignIn = () => (dispatch) => {
   dispatch(requestSignIn());
-  return signIn({
-    email,
-    login,
-    password,
-  }).catch(() => {
-    // TODO: Mocked '.catch()' section
-    if (login === MOCK_USER_AUTH.login && password === MOCK_USER_AUTH.password) {
-      return MOCK_USER_AUTH_RESPONSE;
-    }
-    return Promise.reject([
-      {
-        code: 'WRONG_LOGIN_OR_PASSWORD',
-      },
-    ]);
-  }).then(({ token, user }) => {
-    storage.setItem(keys.TOKEN, token.value);
-    storage.setItem(keys.TOKEN_EXPIRATION, token.expirationTimestamp);
-    storage.setItem('USER', JSON.stringify(user)); // TODO: mocked code
-    dispatch(successSignIn(user));
-  }).catch((errors) => dispatch(errorSignIn(errors)));
+  return googleSignIn()
+    .catch(error => {
+      console.log(error);
+    }).then(data => {
+      console.log(data)
+    }).catch((errors) => dispatch(errorSignIn(errors)));
 };
 
 const fetchSignOut = () => (dispatch) => {
@@ -177,23 +143,15 @@ const fetchSignUp = ({
     .catch((errors) => dispatch(errorSignUp(errors)))
 };
 
-const fetchUser = () => (dispatch) => {
-  if (!storage.getItem(keys.TOKEN)) {
-    return null;
-  }
-  dispatch(requestUser());
+const fetchUser = (dispatch) => {
   return getUser()
-    // TODO Mocked '.catch()' section
-    .catch((err) => {
-      const user = storage.getItem('USER');
-      if (user) {
-        const parsedUser = JSON.parse(user);
-        return parsedUser;
-      }
-      return Promise.reject(err);
+    .then(user => {
+      dispatch(receiveUser(user));
     })
-    .then(user => dispatch(receiveUser(user)))
-    .catch(() => dispatch(fetchSignOut()));
+    .catch(err => {
+      dispatch(errorReceiveUser());
+      return Promise.reject();
+    });
 };
 
 const exportFunctions = {

@@ -36,7 +36,7 @@ const IconButton = ({
           visibility: hidden ? 'hidden' : 'visible',
           background: theme.button.color[colorVariant].background,
           color: theme.button.color[colorVariant].text,
-          padding: `${theme.spacing(0.5)}px`,
+          padding: `0px`,
           opacity: disabled && '0.4',
         },
       }}

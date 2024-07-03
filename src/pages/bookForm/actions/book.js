@@ -5,7 +5,7 @@ import {
 import config from 'config';
 import axios from 'misc/requests';
 
-const receiveBook = book => ({
+export const receiveBook = book => ({
   type: RECEIVE_BOOK,
   payload: book,
 });
@@ -33,7 +33,7 @@ const updateBook = (book, id) => {
   return axios.put(`${SERVER_URL}/api/books/${id}`, book);
 };
 
-const mapToBook = book => ({
+export const mapToBook = book => ({
   id: book.id,
   title: book.title,
   yearPublished: book.yearPublished,
@@ -56,7 +56,9 @@ export const changeBook = (
   book,
   id,
 ) => {
-  return updateBook(book, id);
+  return updateBook(book, id)
+    .then(book => Promise.resolve(book))
+    .catch(err => Promise.reject(err));
 };
 
 export const fetchBook = (
@@ -69,5 +71,8 @@ export const fetchBook = (
       dispatch(receiveBook(mappedBook));
       return Promise.resolve(mappedBook);
     })
-    .catch(error => dispatch(errorBook(error)));
+    .catch(error => {
+      dispatch(errorBook(error));
+      return Promise.reject(error.response?.data?.message || 'unexpected error');
+    });
 };

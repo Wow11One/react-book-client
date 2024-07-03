@@ -37,6 +37,9 @@ function Link({
       onClick={onClick}
       target={target}
       to={actualTo}
+      sx={{
+        padding: '0px',
+      }}
     >
       {children}
     </LinkComponent>
